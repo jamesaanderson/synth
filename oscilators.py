@@ -11,7 +11,7 @@ class Sin(Oscilator):
         super(A,f,t)
         self.phaseOff = phaseOff
 
-    def generate():
+    def generate(self):
         if lfo:
             return (A * np.sin((2 * np.pi * f * t) + phaseOff)).astype(np.int16)
         else:
@@ -22,7 +22,7 @@ class Cos(Oscilator):
         super(A,f,t)
         self.phaseOff = phaseOff
 
-    def generate():
+    def generate(self):
         if lfo:
             return sin(A,f,t,phaseOff + (np.pi/2))
         else:
@@ -33,7 +33,7 @@ class Square(Oscilator):
         super(A,f,t)
         self.N = N
 
-    def generate():
+    def generate(self):
         o = np.zeros(t.size)
         for n in range(1,N):
             o += (1/(2*n - 1)) * sin(A, f * (2*n - 1), t)
@@ -55,7 +55,7 @@ class Triangle(Oscilator):
         super(A,f,t)
         self.N = N
 
-    def generate():
+    def generate(self):
         o = np.zeros(t.size)
         for n in range(0,N):
             o += (((-1)**n) / ((2*n+1)**2)) * sin(A, f * (2*n + 1), t)
@@ -65,5 +65,5 @@ class Noise:
     def __init__(self, t):
         self.t = t
 
-    def generate():
+    def generate(self):
         return np.random.rand(t.size).astype(np.Int16)
