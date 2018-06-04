@@ -26,7 +26,7 @@ class Cos(Oscilator):
         if lfo:
             return sin(A,f,t,phaseOff + (np.pi/2))
         else:
-            return (A + lfo) * Sin(1, f, t, phaseOff).generate()
+            return (A + lfo) * Cos(1, f, t, phaseOff).generate()
 
 class Square(Oscilator):
     def __init__(self, A, f, t, N=64):
