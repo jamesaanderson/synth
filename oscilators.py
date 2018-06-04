@@ -8,57 +8,59 @@ class Oscilator:
 
 class Sin(Oscilator):
     def __init__(self, A, f, t, phaseOff=0, lfo=None):
-        super(A,f,t)
+        super().__init__(A,f,t)
         self.phaseOff = phaseOff
+        self.lfo = lfo
 
     def generate(self):
-        if lfo:
-            return (A * np.sin((2 * np.pi * f * t) + phaseOff)).astype(np.int16)
+        if self.lfo is None:
+            return self.A * np.sin((2 * np.pi * self.f * self.t) + self.phaseOff)
         else:
-            return (A + lfo) * Sin(1, f, t, phaseOff).generate()
+            return (self.A + self.lfo) * Sin(1, self.f, self.t, self.phaseOff).generate()
 
 class Cos(Oscilator):
     def __init__(self, A, f, t, phaseOff=0, lfo=None):
-        super(A,f,t)
+        super().__init__(A,f,t)
         self.phaseOff = phaseOff
+        self.lfo = lfo
 
     def generate(self):
-        if lfo:
-            return sin(A,f,t,phaseOff + (np.pi/2))
+        if self.lfo is None:
+            return Sin(self.A,self.f,self.t,self.phaseOff + (np.pi/2)).generate()
         else:
-            return (A + lfo) * Cos(1, f, t, phaseOff).generate()
+            return (self.A + self.lfo) * Cos(1, self.f, self.t, self.phaseOff).generate()
 
 class Square(Oscilator):
     def __init__(self, A, f, t, N=64):
-        super(A,f,t)
+        super().__init__(A,f,t)
         self.N = N
 
     def generate(self):
-        o = np.zeros(t.size)
-        for n in range(1,N):
-            o += (1/(2*n - 1)) * sin(A, f * (2*n - 1), t)
+        o = np.zeros(self.t.size)
+        for n in range(1,self.N):
+            o += (1/(2*n - 1)) * sin(self.A, self.f * (2*n - 1), self.t)
         return o
 
 class Sawtooth(Oscilator):
     def __init__(self, A, f, t, N=64):
-        super(A,f,t)
+        super().__init__(A,f,t)
         self.N = N
 
     def generate(self):
         o = np.zeros(t.size)
-        for n in range(1,N):
-            o += (1/n) * sin(A, f*n, t)
+        for n in range(1,self.N):
+            o += (1/n) * sin(self.A, n, self.t)
         return o
 
 class Triangle(Oscilator):
     def __init__(self, A, f, t, N=64):
-        super(A,f,t)
+        super().__init__(A,f,t)
         self.N = N
 
     def generate(self):
         o = np.zeros(t.size)
         for n in range(0,N):
-            o += (((-1)**n) / ((2*n+1)**2)) * sin(A, f * (2*n + 1), t)
+            o += (((-1)**n) / ((2*n+1)**2)) * sin(self.A, self.f * (2*n + 1), self.t)
         return o
 
 class Noise:
@@ -66,4 +68,4 @@ class Noise:
         self.t = t
 
     def generate(self):
-        return np.random.rand(t.size).astype(np.Int16)
+        return np.random.rand(self.t.size)
