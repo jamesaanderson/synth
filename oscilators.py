@@ -44,7 +44,7 @@ class Sawtooth(Oscilator):
         super(A,f,t)
         self.N = N
 
-    def generate():
+    def generate(self):
         o = np.zeros(t.size)
         for n in range(1,N):
             o += (1/n) * sin(A, f*n, t)
